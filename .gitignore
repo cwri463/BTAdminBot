@@ -1,0 +1,18 @@
+# Ignore secrets
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# IDE/project settings
+.vscode/
+.idea/
+
+# Dependency environments
+venv/
+.env/
