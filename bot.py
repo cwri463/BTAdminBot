@@ -5,7 +5,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD_ID = int(os.getenv("DISCORD_GUILD_ID"))
 GUEST_ROLE_ID = int(os.getenv("GUEST_ROLE_ID"))
 MEMBER_ROLE_ID = int(os.getenv("MEMBER_ROLE_ID"))
-LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL_ID"))
+LOG_CHANNEL_ID = int(os.getenv("IN_CHANNEL_ID"))
 
 intents = discord.Intents.default()
 intents.members = True
@@ -32,7 +32,7 @@ async def on_ready():
 async def on_member_join(member):
     guild = client.get_guild(GUILD_ID)
     guest_role = guild.get_role(GUEST_ROLE_ID)
-    log_channel = guild.get_channel(LOG_CHANNEL_ID)
+    log_channel = guild.get_channel(IN_CHANNEL_ID)
 
     await member.add_roles(guest_role, reason="Auto-assigned Guest role")
 
@@ -54,7 +54,7 @@ async def on_raw_reaction_add(payload):
         return
 
     # Only process reactions in the join log channel
-    if payload.channel_id != LOG_CHANNEL_ID:
+    if payload.channel_id != IN_CHANNEL_ID:
         return
 
     # Only process ✅ or ❌
@@ -70,7 +70,7 @@ async def on_raw_reaction_add(payload):
     guild = client.get_guild(GUILD_ID)
     member = guild.get_member(member_id)
     mod = guild.get_member(payload.user_id)
-    log_channel = guild.get_channel(LOG_CHANNEL_ID)
+    log_channel = guild.get_channel(IN_CHANNEL_ID)
 
     if payload.emoji.name == "✅":
         await member.remove_roles(guild.get_role(GUEST_ROLE_ID), reason="Promoted by mod reaction")
